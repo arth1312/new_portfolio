@@ -23,7 +23,7 @@ const CyberShape = () => {
     <Float speed={2} rotationIntensity={0.5} floatIntensity={2}>
       <group>
         {/* Inner solid glowing core */}
-        <Icosahedron ref={meshRef} args={[1, 1]} scale={1.2}>
+        <Icosahedron ref={meshRef} args={[1, 1]} scale={0.95}>
           <MeshDistortMaterial
             color="#6366f1" // indigo-500
             emissive="#4338ca" // indigo-700
@@ -36,7 +36,7 @@ const CyberShape = () => {
         </Icosahedron>
 
         {/* Outer wireframe shell */}
-        <Icosahedron ref={wireframeRef} args={[1.5, 2]} scale={1.4}>
+        <Icosahedron ref={wireframeRef} args={[1.5, 2]} scale={1.25}>
           <meshStandardMaterial
             color="#a855f7" // purple-500
             wireframe
@@ -69,7 +69,7 @@ const CyberShape = () => {
 export const HeroScene: React.FC = () => {
   return (
     <div className="w-full h-[400px] md:h-[500px] relative z-10 cursor-grab active:cursor-grabbing">
-      <Canvas camera={{ position: [0, 0, 5], fov: 45 }} dpr={[1, 2]}>
+      <Canvas camera={{ position: [0, 0, 6], fov: 45 }} dpr={[1, 2]}>
         <ambientLight intensity={0.5} />
         <directionalLight position={[10, 10, 5]} intensity={1.5} color="#818cf8" />
         <pointLight position={[-10, -10, -10]} intensity={1} color="#c084fc" />
