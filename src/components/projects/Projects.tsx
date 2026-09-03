@@ -37,7 +37,7 @@ const projectsList: ProjectType[] = [
       'Category-based product filtering & search',
     ],
     image: '/blinkit-project.png',
-    tags: ['React', 'Firebase', 'Cloudinary', 'Tailwind', 'JavaScript'],
+    tags: ['React', 'Firebase', 'Cloudinary', 'React Bootstrap', 'JavaScript'],
     github: 'https://github.com/arth1312/react_js-project/tree/main/pr-13_Blinkit_firebase_Cloudinary_Auth',
     live: 'https://blinkit-21937.web.app/',
   },
