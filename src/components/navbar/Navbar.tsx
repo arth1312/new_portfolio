@@ -90,18 +90,7 @@ export default function Navbar({ onOpenTerminal, cursorEnabled, onToggleCursor }
             <TerminalIcon size={18} />
           </button>
 
-          {/* Custom Cursor Toggle */}
-          <button
-            onClick={onToggleCursor}
-            className={`p-2 rounded-xl border transition-all cursor-pointer ${
-              cursorEnabled
-                ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-slate-800 border-indigo-200 dark:border-slate-700'
-                : 'text-gray-400 border-transparent hover:bg-gray-100 dark:hover:bg-slate-800'
-            }`}
-            title={cursorEnabled ? 'Disable Glowing Cursor' : 'Enable Glowing Cursor'}
-          >
-            <MousePointer size={18} />
-          </button>
+
 
           {/* Theme Toggle */}
           <button

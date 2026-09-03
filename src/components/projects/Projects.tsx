@@ -193,44 +193,78 @@ function CinematicProjectCard({
               </div>
             </div>
           ) : (
-            /* LAPTOP MOCKUP (Default) */
+            /* RESPONSIVE MOCKUP (Default) */
             <>
-              <div className="relative mx-auto w-full max-w-[95%] aspect-[16/10] bg-slate-900 rounded-t-xl border-[4px] sm:border-[6px] border-slate-700 shadow-[0_10px_30px_rgba(0,0,0,0.5)] overflow-hidden transform-gpu group-hover:rotate-x-2 transition-transform duration-500">
-                {/* Laptop Camera Notch */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-3 bg-slate-950 rounded-b-md flex justify-center items-center z-30">
-                  <div className="w-1 h-1 rounded-full bg-blue-500/50 shadow-[0_0_4px_#3b82f6]" />
+              {/* DESKTOP (Laptop) - Visible on md and above */}
+              <div className="hidden md:block">
+                <div className="relative mx-auto w-full max-w-[95%] aspect-[16/10] bg-slate-900 rounded-t-xl border-[6px] border-slate-700 shadow-[0_10px_30px_rgba(0,0,0,0.5)] overflow-hidden transform-gpu group-hover:rotate-x-2 transition-transform duration-500">
+                  {/* Laptop Camera Notch */}
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-3 bg-slate-950 rounded-b-md flex justify-center items-center z-30">
+                    <div className="w-1 h-1 rounded-full bg-blue-500/50 shadow-[0_0_4px_#3b82f6]" />
+                  </div>
+                  {/* Screen Content (Image) */}
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out z-10 relative"
+                  />
+                  {/* Cinematic Vignette */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-80 group-hover:opacity-40 transition-opacity duration-300 z-20" />
+                  {/* Category Badge on Screen */}
+                  <div className="absolute top-3 left-3 z-30 flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-950/80 text-indigo-400 border border-indigo-500/40 backdrop-blur-md shadow-lg">
+                    <Sparkles size={10} className="text-indigo-400 animate-pulse" />
+                    <span>{project.category}</span>
+                  </div>
+                  {/* Cinematic Quick View Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center bg-indigo-950/40 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-all duration-300 z-30">
+                    <button className="px-4 py-2 rounded-2xl bg-white text-gray-900 font-extrabold text-xs shadow-2xl flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 hover:scale-105 pointer-events-none">
+                      <Eye size={14} className="text-indigo-600" /> View Case Study
+                    </button>
+                  </div>
                 </div>
-
-                {/* Screen Content (Image) */}
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out z-10 relative"
-                />
-                
-                {/* Cinematic Vignette */}
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-80 group-hover:opacity-40 transition-opacity duration-300 z-20" />
-
-                {/* Category Badge on Screen */}
-                <div className="absolute top-3 left-3 z-30 flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-950/80 text-indigo-400 border border-indigo-500/40 backdrop-blur-md shadow-lg">
-                  <Sparkles size={10} className="text-indigo-400 animate-pulse" />
-                  <span>{project.category}</span>
-                </div>
-
-                {/* Cinematic Quick View Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center bg-indigo-950/40 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-all duration-300 z-30">
-                  <button
-                    className="px-4 py-2 rounded-2xl bg-white text-gray-900 font-extrabold text-xs shadow-2xl flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 hover:scale-105 pointer-events-none"
-                  >
-                    <Eye size={14} className="text-indigo-600" /> View Case Study
-                  </button>
+                {/* Laptop Base/Keyboard Deck */}
+                <div className="relative mx-auto w-full h-3 bg-slate-600 rounded-b-xl shadow-[-10px_20px_20px_rgba(0,0,0,0.5)] z-10 flex justify-center transform-gpu group-hover:-translate-y-0.5 transition-transform duration-500">
+                  <div className="w-1/5 h-1.5 bg-slate-500 rounded-b-sm mt-0.5 shadow-inner" />
                 </div>
               </div>
-              
-              {/* Laptop Base/Keyboard Deck */}
-              <div className="relative mx-auto w-full h-2 sm:h-3 bg-slate-600 rounded-b-xl shadow-[-10px_20px_20px_rgba(0,0,0,0.5)] z-10 flex justify-center transform-gpu group-hover:-translate-y-0.5 transition-transform duration-500">
-                {/* Touchpad indent */}
-                <div className="w-1/5 h-1 sm:h-1.5 bg-slate-500 rounded-b-sm mt-0.5 shadow-inner" />
+
+              {/* TABLET (iPad) - Visible on sm only (between sm and md) */}
+              <div className="hidden sm:block md:hidden">
+                <div className="relative mx-auto w-full max-w-[80%] aspect-[4/3] bg-slate-900 rounded-[2rem] border-[10px] border-slate-700 shadow-[0_10px_30px_rgba(0,0,0,0.5)] overflow-hidden transform-gpu group-hover:rotate-x-2 transition-transform duration-500">
+                  {/* Tablet Camera Bezel */}
+                  <div className="absolute top-1/2 left-2 -translate-y-1/2 w-1.5 h-1.5 bg-slate-950 rounded-full shadow-[0_0_4px_#3b82f6] z-30" />
+                  
+                  {/* Image */}
+                  <img src={project.image} alt={project.title} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out z-10 relative" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-80 group-hover:opacity-40 transition-opacity duration-300 z-20" />
+                  <div className="absolute top-4 left-6 z-30 flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-950/80 text-indigo-400 border border-indigo-500/40 backdrop-blur-md shadow-lg">
+                    <Sparkles size={10} className="text-indigo-400 animate-pulse" />
+                    <span>{project.category}</span>
+                  </div>
+                  <div className="absolute inset-0 flex items-center justify-center bg-indigo-950/40 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-all duration-300 z-30">
+                    <button className="px-4 py-2 rounded-2xl bg-white text-gray-900 font-extrabold text-xs shadow-2xl flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 hover:scale-105 pointer-events-none">
+                      <Eye size={14} className="text-indigo-600" /> View
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* MOBILE (iPhone) - Visible below sm */}
+              <div className="block sm:hidden">
+                <div className="relative mx-auto w-full max-w-[160px] aspect-[9/19] bg-slate-900 rounded-[2rem] border-[6px] border-slate-700 shadow-[0_10px_30px_rgba(0,0,0,0.5)] overflow-hidden transform-gpu group-hover:rotate-x-2 transition-transform duration-500">
+                  {/* iPhone Dynamic Island / Notch */}
+                  <div className="absolute top-2 left-1/2 -translate-x-1/2 w-12 h-3 bg-slate-950 rounded-full flex justify-center items-center z-30">
+                    <div className="w-1 h-1 rounded-full bg-blue-500/50 shadow-[0_0_4px_#3b82f6] mr-1.5" />
+                    <div className="w-0.5 h-0.5 rounded-full bg-slate-800" />
+                  </div>
+                  <img src={project.image} alt={project.title} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out z-10 relative" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-80 group-hover:opacity-40 transition-opacity duration-300 z-20" />
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 flex items-center justify-center bg-indigo-950/40 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-all duration-300 w-full h-full">
+                    <button className="px-3 py-1.5 rounded-xl bg-white text-gray-900 font-extrabold text-[10px] shadow-2xl flex items-center gap-1.5 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 hover:scale-105 pointer-events-none">
+                      <Eye size={12} className="text-indigo-600" /> View
+                    </button>
+                  </div>
+                </div>
               </div>
             </>
           )}
@@ -273,7 +307,7 @@ function CinematicProjectCard({
             </div>
 
             {/* Interactive Action Bar */}
-            <div className="flex items-center gap-3 pt-2 border-t border-slate-800/80">
+            <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 pt-2 border-t border-slate-800/80">
               <button
                 onClick={() => { playClickSound(); onOpenModal(project); }}
                 onMouseEnter={playHoverSound}

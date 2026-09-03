@@ -219,7 +219,7 @@ export default function Contact() {
               <p className="text-xs font-mono uppercase tracking-widest text-indigo-400 mb-4 font-bold flex items-center gap-1.5">
                 <Sparkles size={14} /> Connect Across Networks
               </p>
-              <div className="flex gap-4">
+              <div className="flex flex-wrap sm:flex-nowrap gap-4">
                 {socialLinks.map((social) => (
                   <motion.a
                     key={social.name}

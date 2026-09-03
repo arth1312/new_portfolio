@@ -1,154 +1,150 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function IntroScreen({ onComplete }: { onComplete: () => void }) {
-  const [phase, setPhase] = useState<'logo' | 'text' | 'exit'>('logo');
+const bootSequence = [
+  "> INITIALIZING SYSTEM KERNEL...",
+  "> BYPASSING SECURITY PROTOCOLS...",
+  "> LOADING 3D WEBGL ENGINE...",
+  "> DECRYPTING UI MODULES...",
+];
+
+// Individual Terminal Line Component
+const TerminalLine = ({ text, onComplete }: { text: string; onComplete: () => void }) => {
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase('text'), 800);
-    const t2 = setTimeout(() => setPhase('exit'), 2400);
-    const t3 = setTimeout(() => onComplete(), 3200);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
-  }, [onComplete]);
+    // Fast interval to increment progress from 0 to 100
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          return 100;
+        }
+        // Random increment between 3 and 10 for a slower, more realistic loading feel
+        const increment = Math.floor(Math.random() * 8) + 3;
+        return Math.min(prev + increment, 100);
+      });
+    }, 90); // 90ms interval for slower counting
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    // Once progress hits 100%, tell the parent component it's done
+    if (progress === 100) {
+      const timeout = setTimeout(() => {
+        onComplete();
+      }, 150); // slight pause after reaching 100% before starting next line
+      return () => clearTimeout(timeout);
+    }
+  }, [progress, onComplete]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -10 }}
+      animate={{ opacity: 1, x: 0 }}
+      className="text-xs sm:text-sm md:text-base mb-2 flex tracking-wider font-mono w-full"
+    >
+      <span className="text-indigo-400/80 mr-3">{text}</span>
+      {progress < 100 ? (
+        <span className="text-indigo-300 font-bold ml-auto">[{progress}%]</span>
+      ) : (
+        <span className="text-emerald-400 font-bold drop-shadow-[0_0_5px_rgba(52,211,153,0.8)] ml-auto">
+          [OK]
+        </span>
+      )}
+    </motion.div>
+  );
+};
+
+export default function IntroScreen({ onComplete }: { onComplete: () => void }) {
+  const [currentLineIndex, setCurrentLineIndex] = useState(0);
+  const [accessGranted, setAccessGranted] = useState(false);
+  const [isExiting, setIsExiting] = useState(false);
+
+  const handleLineComplete = () => {
+    setCurrentLineIndex((prev) => prev + 1);
+  };
+
+  useEffect(() => {
+    // If all lines are completed, trigger the final sequence
+    if (currentLineIndex === bootSequence.length) {
+      const t1 = setTimeout(() => setAccessGranted(true), 400); // Wait a bit, then ACCESS GRANTED
+      const t2 = setTimeout(() => setIsExiting(true), 1500); // Start fade out
+      const t3 = setTimeout(() => onComplete(), 2100); // Unmount and load website
+
+      return () => {
+        clearTimeout(t1);
+        clearTimeout(t2);
+        clearTimeout(t3);
+      };
+    }
+  }, [currentLineIndex, onComplete]);
 
   return (
     <AnimatePresence>
-      {phase !== 'exit' ? null : null}
-      <motion.div
-        key="intro"
-        initial={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        animate={phase === 'exit' ? { opacity: 0, scale: 1.1 } : { opacity: 1 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden"
-      >
-        {/* Animated gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-950 via-indigo-950 to-purple-950">
-          {/* Animated mesh overlay */}
-          <motion.div
-            animate={{
-              background: [
-                'radial-gradient(ellipse 600px 600px at 30% 40%, rgba(99,102,241,0.15) 0%, transparent 70%)',
-                'radial-gradient(ellipse 600px 600px at 70% 60%, rgba(139,92,246,0.2) 0%, transparent 70%)',
-                'radial-gradient(ellipse 600px 600px at 40% 70%, rgba(99,102,241,0.15) 0%, transparent 70%)',
-              ],
-            }}
-            transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
-            className="absolute inset-0"
-          />
-        </div>
-
-        {/* Glowing particles */}
-        {Array.from({ length: 20 }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full"
-            style={{
-              width: Math.random() * 4 + 2,
-              height: Math.random() * 4 + 2,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              background: `rgba(${165 + Math.random() * 90}, ${130 + Math.random() * 80}, 255, ${0.3 + Math.random() * 0.5})`,
-              boxShadow: `0 0 ${6 + Math.random() * 10}px rgba(139,92,246,0.4)`,
-            }}
-            animate={{
-              y: [0, -30 - Math.random() * 40, 0],
-              x: [0, (Math.random() - 0.5) * 40, 0],
-              opacity: [0, 0.8, 0],
-              scale: [0.5, 1.2, 0.5],
-            }}
-            transition={{
-              duration: 2 + Math.random() * 2,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-              ease: 'easeInOut',
-            }}
-          />
-        ))}
-
-        {/* Core glow ring behind logo */}
+      {!isExiting && (
         <motion.div
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: [0, 1.5, 1.2], opacity: [0, 0.6, 0.3] }}
-          transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute w-64 h-64 rounded-full"
-          style={{
-            background: 'radial-gradient(circle, rgba(99,102,241,0.25) 0%, rgba(139,92,246,0.08) 50%, transparent 70%)',
-            filter: 'blur(40px)',
-          }}
-        />
+          key="intro"
+          exit={{ opacity: 0, scale: 1.05, filter: "brightness(3)" }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+          className="fixed inset-0 z-[100] flex flex-col justify-center bg-[#05050a] px-6 sm:px-20 font-mono overflow-hidden"
+        >
+          {/* Subtle Scanline Overlay for CRT Monitor Effect */}
+          <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.3)_50%)] bg-[length:100%_4px] pointer-events-none z-10 opacity-40" />
 
-        {/* Content */}
-        <div className="relative z-10 text-center">
-          {/* Logo mark — animated brackets */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.3 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-6 flex items-center justify-center gap-2"
-          >
-            <motion.span
-              initial={{ x: 20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="text-5xl md:text-6xl font-extralight text-indigo-400/80"
-            >
-              {'<'}
-            </motion.span>
-            <motion.span
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"
-            >
-              A
-            </motion.span>
-            <motion.span
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="text-5xl md:text-6xl font-extralight text-indigo-400/80"
-            >
-              {'/>'}
-            </motion.span>
-          </motion.div>
-
-          {/* Name */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={phase === 'text' || phase === 'exit' ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="text-2xl md:text-3xl font-bold text-white/90 tracking-wide mb-2"
-          >
-            Arth Kumar
-          </motion.h1>
-
-          {/* Role tagline */}
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={phase === 'text' || phase === 'exit' ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="text-sm md:text-base text-indigo-300/70 tracking-[0.3em] uppercase font-light"
-          >
-            Full Stack Developer
-          </motion.p>
-
-          {/* Loading bar */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={phase === 'text' || phase === 'exit' ? { opacity: 1 } : {}}
-            transition={{ delay: 0.3 }}
-            className="mt-8 mx-auto w-48 h-[2px] bg-white/10 rounded-full overflow-hidden"
-          >
+          <div className="relative z-20 max-w-4xl w-full mx-auto flex flex-col items-start">
+            {/* Logo */}
             <motion.div
-              initial={{ width: '0%' }}
-              animate={{ width: '100%' }}
-              transition={{ duration: 1.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
-            />
-          </motion.div>
-        </div>
-      </motion.div>
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="mb-8 flex items-center gap-2"
+            >
+              <span className="text-3xl md:text-4xl font-extralight text-indigo-500/80">{'<'}</span>
+              <span className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                A
+              </span>
+              <span className="text-3xl md:text-4xl font-extralight text-indigo-500/80">{'/>'}</span>
+            </motion.div>
+
+            {/* Terminal Lines Container - fixed width so percentages align on the right */}
+            <div className="w-full max-w-lg">
+              {bootSequence.slice(0, currentLineIndex + 1).map((line, idx) => (
+                <TerminalLine
+                  key={idx}
+                  text={line}
+                  onComplete={idx === currentLineIndex ? handleLineComplete : () => {}}
+                />
+              ))}
+            </div>
+
+            {/* Access Granted Message */}
+            {accessGranted && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0, 1, 0, 1] }}
+                transition={{ duration: 0.3 }}
+                className="mt-6 text-emerald-400 font-bold text-base sm:text-lg md:text-xl drop-shadow-[0_0_10px_rgba(52,211,153,0.8)] tracking-widest font-mono"
+              >
+                [ ACCESS GRANTED - WELCOME ARTH KUMAR ]
+              </motion.div>
+            )}
+
+            {/* Blinking Cursor */}
+            {!accessGranted && (
+              <motion.div
+                animate={{ opacity: [1, 0] }}
+                transition={{ repeat: Infinity, duration: 0.8 }}
+                className="w-3 h-5 bg-indigo-400 mt-2"
+              />
+            )}
+          </div>
+
+          {/* CRT Vignette/Shadow */}
+          <div className="absolute inset-0 pointer-events-none z-10 shadow-[inset_0_0_150px_rgba(0,0,0,0.9)]" />
+        </motion.div>
+      )}
     </AnimatePresence>
   );
 }

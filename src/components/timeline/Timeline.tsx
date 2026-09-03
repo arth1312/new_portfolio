@@ -4,6 +4,15 @@ import { GraduationCap, Award, Rocket, Code2, Briefcase } from 'lucide-react';
 
 const timelineData = [
   {
+    year: 'EDUCATION',
+    title: 'Diploma in Computer Engineering',
+    institution: 'UKA Tarsadia University',
+    description: 'Built core foundations in computer science, algorithms, software engineering principles, and web technologies.',
+    icon: GraduationCap,
+    color: 'from-indigo-500 to-purple-600',
+    tags: ['C/C++', 'CS Fundamentals', 'Web Basics'],
+  },
+  {
     year: 'INTERNSHIP',
     title: 'Full Stack Development Intern',
     institution: 'EVAAN SOFTTECH',
@@ -20,15 +29,6 @@ const timelineData = [
     icon: Award,
     color: 'from-purple-500 to-pink-600',
     tags: ['React.js', 'JavaScript ES6+', 'HTML5/CSS3', 'Bootstrap'],
-  },
-  {
-    year: 'EDUCATION',
-    title: 'Diploma in Computer Engineering',
-    institution: 'UKA Tarsadia University',
-    description: 'Built core foundations in computer science, algorithms, software engineering principles, and web technologies.',
-    icon: GraduationCap,
-    color: 'from-indigo-500 to-purple-600',
-    tags: ['C/C++', 'CS Fundamentals', 'Web Basics'],
   },
   {
     year: 'PRESENT',
