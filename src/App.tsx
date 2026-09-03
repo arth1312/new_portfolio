@@ -19,7 +19,6 @@ import BackToTop from '@/components/BackToTop';
 function MainApp() {
   const [showIntro, setShowIntro] = useState(true);
   const [terminalOpen, setTerminalOpen] = useState(false);
-  const [cursorEnabled, setCursorEnabled] = useState(true);
 
   const handleIntroComplete = useCallback(() => {
     setShowIntro(false);
@@ -28,7 +27,7 @@ function MainApp() {
   return (
     <>
       <ProgressBar />
-      <CustomCursor enabled={cursorEnabled} />
+      <CustomCursor enabled={true} />
 
       <AnimatePresence>
         {showIntro && <IntroScreen onComplete={handleIntroComplete} />}
@@ -42,8 +41,6 @@ function MainApp() {
       >
         <Navbar
           onOpenTerminal={() => setTerminalOpen(true)}
-          cursorEnabled={cursorEnabled}
-          onToggleCursor={() => setCursorEnabled((prev) => !prev)}
         />
         <main>
           <Hero onOpenTerminal={() => setTerminalOpen(true)} />

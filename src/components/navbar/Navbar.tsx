@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sun, Moon, Terminal as TerminalIcon, MousePointer } from 'lucide-react';
+import { Menu, X, Sun, Moon, Terminal as TerminalIcon } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 
 const navLinks = [
@@ -14,11 +14,9 @@ const navLinks = [
 
 interface NavbarProps {
   onOpenTerminal: () => void;
-  cursorEnabled: boolean;
-  onToggleCursor: () => void;
 }
 
-export default function Navbar({ onOpenTerminal, cursorEnabled, onToggleCursor }: NavbarProps) {
+export default function Navbar({ onOpenTerminal }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { theme, toggleTheme } = useTheme();
